@@ -1,0 +1,9 @@
+entrypoint: bundle exec rackup --port $PORT
+env: flex
+runtime: ruby
+
+env_variables:
+  SECRET_KEY_BASE: 41489fc048265bbffafbbc548256bcf558831427e3d618dd13847f19a5982eaf772f8397d4474b5ec9bfda3919eaee1fa79e624d4c62eea2456f059c5b273748
+
+beta_settings:
+  cloud_sql_instances: tartanhacks-194811:us-east4:tartansql

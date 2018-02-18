@@ -1,0 +1,186 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Trashes</h1>
+
+<div id="con"></div>
+<div>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Recycle status</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @trashes.each do |trash| %>
+      <tr>
+        <td><%= trash.name %></td>
+        <td><%= trash.quantity %></td>
+        <td><%= trash.recycle_status %></td>
+        <td><%= link_to 'Details', trash %></td>
+        <!-- <td><%= link_to 'Edit', edit_trash_path(trash) %></td> -->
+        <!-- <td><%= link_to 'Destroy', trash, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+<br>
+
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<script>
+var colors = Highcharts.getOptions().colors,
+    categories = ['Recyclable', 'Non-recyclable'],
+    data = [{
+        y: 60,
+        color: colors[2],
+        drilldown: {
+            name: 'Recycle Categories',
+            categories: ['Glass', 'Plastic', 'Paper'],
+            data: [10,40,10],
+            color: colors[2]
+        }
+    }, {
+        y: 40,
+        color: colors[1],
+        drilldown: {
+            name: 'Waste',
+            categories: ['Waste'],
+            data: [40],
+            color: colors[1]
+        }
+    }],
+    browserData = [],
+    versionsData = [],
+    i,
+    j,
+    dataLen = data.length,
+    drillDataLen,
+    brightness;
+
+
+// Build the data arrays
+for (i = 0; i < dataLen; i += 1) {
+    console.log("dataLen:" + dataLen);
+    // add browser data
+    browserData.push({
+        name: categories[i],
+        y: data[i].y,
+        color: data[i].color
+    });
+
+    // add version data
+    drillDataLen = data[i].drilldown.data.length;
+    for (j = 0; j < drillDataLen; j += 1) {
+        brightness = 0.2 - (j / drillDataLen) / 5;
+        versionsData.push({
+            name: data[i].drilldown.categories[j],
+            y: data[i].drilldown.data[j],
+            color: Highcharts.Color(data[i].color).brighten(brightness).get()
+        });
+    }
+}
+
+// Create the chart
+Highcharts.chart('con', {
+    chart: {
+        type: 'pie'
+    },
+    title: {
+        text: 'Your Daily Trash'
+    },
+    subtitle: {
+        text: ''
+    },
+    yAxis: {
+        title: {
+            text: 'Total percent trash'
+        }
+    },
+    plotOptions: {
+        pie: {
+            shadow: false,
+            center: ['50%', '50%']
+        }
+    },
+    tooltip: {
+        valueSuffix: '%'
+    },
+    series: [{
+        name: 'Recyclable',
+        data: browserData,
+        size: '60%',
+        dataLabels: {
+            formatter: function () {
+                return this.y > 5 ? this.point.name : null;
+            },
+            color: '#ffffff',
+            distance: -30
+        }
+    }, {
+        name: 'Categories',
+        data: versionsData,
+        size: '80%',
+        innerSize: '60%',
+        dataLabels: {
+            formatter: function () {
+                // display only if larger than 1
+                return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+                    this.y + '%' : null;
+            }
+        },
+        id: 'versions'
+    }],
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 400
+            },
+            chartOptions: {
+                series: [{
+                    id: 'versions',
+                    dataLabels: {
+                        enabled: false
+                    }
+                }]
+            }
+        }]
+    }
+});
+
+
+(function ($) {
+	"use strict";
+	$('.column100').on('mouseover',function(){
+		var table1 = $(this).parent().parent().parent();
+		var table2 = $(this).parent().parent();
+		var verTable = $(table1).data('vertable')+"";
+		var column = $(this).data('column') + "";
+
+		$(table2).find("."+column).addClass('hov-column-'+ verTable);
+		$(table1).find(".row100.head ."+column).addClass('hov-column-head-'+ verTable);
+	});
+
+	$('.column100').on('mouseout',function(){
+		var table1 = $(this).parent().parent().parent();
+		var table2 = $(this).parent().parent();
+		var verTable = $(table1).data('vertable')+"";
+		var column = $(this).data('column') + "";
+
+		$(table2).find("."+column).removeClass('hov-column-'+ verTable);
+		$(table1).find(".row100.head ."+column).removeClass('hov-column-head-'+ verTable);
+	});
+
+
+})(jQuery);
+
+
+</script>
+
+<%= link_to 'New Trash', new_trash_path%>

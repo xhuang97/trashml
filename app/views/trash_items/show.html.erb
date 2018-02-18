@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Time thrown:</strong>
+  <%= @trash_item.time_thrown %>
+</p>
+
+<p>
+  <strong>Correctness:</strong>
+  <%= @trash_item.correctness %>
+</p>
+
+<%= link_to 'Edit', edit_trash_item_path(@trash_item) %> |
+<%= link_to 'Back', trash_items_path %>

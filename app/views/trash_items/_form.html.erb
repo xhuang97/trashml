@@ -1,0 +1,27 @@
+<%= form_for(trash_item) do |f| %>
+  <% if trash_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(trash_item.errors.count, "error") %> prohibited this trash_item from being saved:</h2>
+
+      <ul>
+      <% trash_item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :time_thrown %>
+    <%= f.datetime_select :time_thrown %>
+  </div>
+
+  <div class="field">
+    <%= f.label :correctness %>
+    <%= f.number_field :correctness %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
