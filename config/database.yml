@@ -34,7 +34,7 @@ production:
   encoding: unicode
   pool: 5
   timeout: 5000
-  username: "killian"
-  password: "jlsyxxx13"
+  username: "root"
+  password: "jlsyxxx"
   database: "trashml"
   host:   "/cloudsql/tartanhacks-194811:us-east4:tartansql"
