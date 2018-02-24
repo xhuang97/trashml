@@ -14,8 +14,8 @@ development:
     encoding: unicode
     pool: 5
     timeout: 5000
-    username: "killian"
-    password: "jlsyxxx13"
+    username: "root"
+    password: "jlsyxxx"
     database: "trashml"
 
 # Warning: The database defined as "test" will be erased and
